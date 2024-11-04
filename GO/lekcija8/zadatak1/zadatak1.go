@@ -1,11 +1,11 @@
-package main
+package zadatak1
 
 import (
 	"blazperic/lekcija8/zadatak1/model"
 	"fmt"
 )
 
-func zadatak1() {
+func Zadatak1() {
 	anteB := model.BankAccount{
 		Owner:   "Ante",
 		Balance: 0,
