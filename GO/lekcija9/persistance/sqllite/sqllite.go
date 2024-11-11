@@ -1,11 +1,12 @@
 package sqllite
 
 import (
+	"blazperic/lekcija9/config"
 	"blazperic/lekcija9/persistance"
 	"database/sql"
 	"fmt"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 type Db struct {
@@ -13,7 +14,7 @@ type Db struct {
 }
 
 func NewSqlDatabase() (*Db, error) {
-	db, err := sql.Open("sqlite3", "test.db")
+	db, err := sql.Open(config.DRIVER_NAME, config.DATABASE_NAME)
 	if err != nil {
 		// _ = fmt.Errorf("error opening database: %v", err)
 		return nil, &persistance.DbConnectionError{Message: fmt.Sprintf("error opening database: %v", err.Error())}
@@ -24,4 +25,14 @@ func NewSqlDatabase() (*Db, error) {
 
 func (sl *Db) GetDB() *sql.DB {
 	return sl.database
+}
+
+func (sl *Db) Migrate() error {
+	initialSqlStatement := "CREATE TABLE IF NOT EXISTS tasks (id TEXT PRIMARY KEY, title TEXT NOT NULL, description TEXT, deadline DATE, isCompleted BOOLEAN DEFAULT FALSE, isDeleted BOOLEAN DEFAULT FALSE);"
+
+	_, err := sl.GetDB().Exec(initialSqlStatement)
+	if err != nil {
+		return &persistance.DbStatementError{Message: fmt.Sprintf("error creating table: %v", err.Error())}
+	}
+	return nil
 }
