@@ -3,9 +3,10 @@ package sqlite
 import (
 	"database/sql"
 	"fmt"
-	_ "modernc.org/sqlite"
 	"todo-cc/config"
 	"todo-cc/persistence"
+
+	_ "modernc.org/sqlite"
 )
 
 type Db struct {
@@ -30,7 +31,7 @@ func (sl *Db) GetDb() *sql.DB {
 
 func (sl *Db) MigrateDB() error {
 	initialSqlStatement := `CREATE TABLE IF NOT EXISTS task (
-id INT PRIMARY KEY,
+id INTEGER PRIMARY KEY AUTOINCREMENT,
 title TEXT NOT NULL,
 description TEXT,
 deadline DATE,

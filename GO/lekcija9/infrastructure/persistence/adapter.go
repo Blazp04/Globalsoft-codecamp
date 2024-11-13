@@ -38,6 +38,14 @@ func (a *SqliteAdapter) GetTask(id int) (*port.TaskDTO, error) {
 }
 
 func (a *SqliteAdapter) NewTask(title, description string, deadline time.Time, completed, deleted bool) error {
-
+	insertTaskSqlStatement := `
+  INSERT INTO task (title, description, deadline, completed, deleted)
+  VALUES (?, ?, ?, ?, ?);
+  `
+	//Ianče radimo prepare statement jer se tako štitimo od sql injectiona
+	_, err := a.dbClient.Exec(insertTaskSqlStatement, title, description, deadline, completed, deleted)
+	if err != nil {
+		return fmt.Errorf("unable to insert new task: %v", err.Error())
+	}
 	return nil
 }

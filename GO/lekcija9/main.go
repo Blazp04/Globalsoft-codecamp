@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 	"todo-cc/infrastructure/persistence"
 	"todo-cc/infrastructure/rest"
 	"todo-cc/persistence/sqlite"
@@ -19,6 +20,9 @@ func main() {
 	}
 	//TODO remove this, test purpose only.
 	taskPersistence := persistence.NewPersistenceAdapter(db.GetDb())
-	_, _ = taskPersistence.GetTask(1)
+	_ = taskPersistence.NewTask("test", "test", time.Now().Add(time.Hour*24), false, false)
+	res, _ := taskPersistence.GetTask(1)
+	fmt.Println(res)
+
 	restController.Run()
 }
