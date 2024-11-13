@@ -1,11 +1,11 @@
 package main
 
 import (
+	"blazperic/lekcija9/infrastructure/persistence"
+	"blazperic/lekcija9/infrastructure/rest"
+	"blazperic/lekcija9/persistence/sqlite"
 	"fmt"
 	"time"
-	"todo-cc/infrastructure/persistence"
-	"todo-cc/infrastructure/rest"
-	"todo-cc/persistence/sqlite"
 )
 
 func main() {

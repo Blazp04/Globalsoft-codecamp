@@ -1,10 +1,10 @@
 package persistence
 
 import (
+	"blazperic/lekcija9/core/port"
 	"database/sql"
 	"fmt"
 	"time"
-	"todo-cc/core/port"
 )
 
 type SqliteAdapter struct {

@@ -1,12 +1,12 @@
 package rest
 
 import (
+	"blazperic/lekcija9/config"
+	"blazperic/lekcija9/core/port"
+	"blazperic/lekcija9/infrastructure/persistence"
+	"blazperic/lekcija9/persistence/sqlite"
 	"net/http"
 	"strconv"
-	"todo-cc/config"
-	"todo-cc/core/port"
-	"todo-cc/infrastructure/persistence"
-	"todo-cc/persistence/sqlite"
 
 	"github.com/gin-gonic/gin"
 )

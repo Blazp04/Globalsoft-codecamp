@@ -1,10 +1,10 @@
 package sqlite
 
 import (
+	"blazperic/lekcija9/config"
+	"blazperic/lekcija9/persistence"
 	"database/sql"
 	"fmt"
-	"todo-cc/config"
-	"todo-cc/persistence"
 
 	_ "modernc.org/sqlite"
 )
