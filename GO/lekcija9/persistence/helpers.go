@@ -1,10 +1,10 @@
-package persistance
+package persistence
 
 type DbConnectionError struct {
 	Message string
 }
 
-type DbStatementError struct {
+type ExecError struct {
 	Message string
 }
 
@@ -12,6 +12,6 @@ func (e *DbConnectionError) Error() string {
 	return e.Message
 }
 
-func (e *DbStatementError) Error() string {
-	return e.Message
+func (dbe *ExecError) Error() string {
+	return dbe.Message
 }

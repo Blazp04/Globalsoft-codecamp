@@ -1,5 +1,0 @@
-Nema pachage menangera nego samo sa githuba preuzimamo direktno kod
-Primjer instalacije je: 
-    go get github.com/mattn/go-sqlite3
-
-Ovdje radimo hexagonalnu arhitekuru

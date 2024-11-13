@@ -1,30 +1,24 @@
 package main
 
 import (
-	"blazperic/lekcija9/infrastructure"
-	"blazperic/lekcija9/persistance/sqllite"
 	"fmt"
+	"todo-cc/infrastructure/persistence"
+	"todo-cc/infrastructure/rest"
+	"todo-cc/persistence/sqlite"
 )
 
 func main() {
-	controller := infrastructure.NewRestController()
-
-	db, err := sqllite.NewSqlDatabase()
+	restController := rest.NewRestController()
+	db, err := sqlite.NewSqliteDatabase()
 	if err != nil {
-		panic(fmt.Sprintf("error creating database: %v", err))
+		panic(fmt.Sprintf("error while initializing database: %s", err.Error()))
 	}
-
-	err = db.GetDB().Ping()
+	err = db.MigrateDB()
 	if err != nil {
-		panic(fmt.Sprintf("error pinging database: %v", err))
+		panic(err.Error())
 	}
-
-	err = db.Migrate()
-	if err != nil {
-		panic(fmt.Sprintf("error migrating database: %v", err))
-	}
-
-	controller.Run()
-
-	fmt.Println("Ovo sve radi!")
+	//TODO remove this, test purpose only.
+	taskPersistence := persistence.NewPersistenceAdapter(db.GetDb())
+	_, _ = taskPersistence.GetTask(1)
+	restController.Run()
 }
