@@ -14,12 +14,16 @@ func NewRestController() *Controller {
 	c := &Controller{
 		router: gin.Default(),
 	}
+	c.setupRouter()
 
+	return c
+}
+
+func (c *Controller) setupRouter() {
+	c.router.Use(gin.Logger())
 	c.router.GET("/", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"message": "Hello World!"})
 	})
-
-	return c
 }
 
 func (c *Controller) Run() error {

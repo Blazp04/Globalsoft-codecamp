@@ -8,6 +8,7 @@ import (
 
 func main() {
 	controller := infrastructure.NewRestController()
+
 	db, err := sqllite.NewSqlDatabase()
 	if err != nil {
 		panic(fmt.Sprintf("error creating database: %v", err))
