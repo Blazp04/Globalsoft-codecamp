@@ -52,3 +52,55 @@ func (a *SqliteAdapter) NewTask(title, description string, deadline time.Time, c
 	}
 	return nil
 }
+
+func (a *SqliteAdapter) GetAllTasks() ([]*port.TaskDTO, error) {
+	findAllTasksSqlStatement := "SELECT title, description, completed, deleted FROM task WHERE deleted = false"
+
+	rows, err := a.dbClient.Query(findAllTasksSqlStatement)
+
+	if err != nil {
+		return nil, fmt.Errorf("unable to prepare query: %v", err.Error())
+	}
+	defer rows.Close()
+
+	var TaskDTO port.TaskDTO
+	var TaskDTOs []*port.TaskDTO
+
+	for rows.Next() {
+		err = rows.Scan(&TaskDTO.Title, &TaskDTO.Description, &TaskDTO.Completed, &TaskDTO.Deleted)
+		if err != nil {
+			return nil, fmt.Errorf("unable to set ID into statement: %v", err.Error())
+		}
+		TaskDTOs = append(TaskDTOs, &TaskDTO)
+	}
+
+	return TaskDTOs, nil
+}
+
+func (a *SqliteAdapter) DeleteTask(id int) error {
+	deleteTaskSqlStatement := "UPDATE task SET deleted = true WHERE id = ?"
+
+	stmt, err := a.dbClient.Prepare(deleteTaskSqlStatement)
+	if err != nil {
+		return fmt.Errorf("unable to prepare insert statement: %v", err.Error())
+	}
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return fmt.Errorf("unable to execute insert statement: %v", err.Error())
+	}
+	return nil
+}
+
+func (a *SqliteAdapter) CompleteTask(id int) error {
+	completeTaskSqlStatement := "UPDATE task SET completed = true WHERE id = ?"
+
+	stmt, err := a.dbClient.Prepare(completeTaskSqlStatement)
+	if err != nil {
+		return fmt.Errorf("unable to prepare insert statement: %v", err.Error())
+	}
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return fmt.Errorf("unable to execute insert statement: %v", err.Error())
+	}
+	return nil
+}
