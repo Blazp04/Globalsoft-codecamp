@@ -1,7 +1,7 @@
 package persistence
 
 import (
-	"blazperic/lekcija9/core/port"
+	"blazperic/lekcija9/core/port/persistance"
 	"database/sql"
 	"fmt"
 	"time"
@@ -17,7 +17,7 @@ func NewPersistenceAdapter(dbClient *sql.DB) *SqliteAdapter {
 	}
 }
 
-func (a *SqliteAdapter) GetTask(id int) (*port.TaskDTO, error) {
+func (a *SqliteAdapter) GetTask(id int) (*persistance.TaskDTO, error) {
 	//TODO selecting deadline causes error, check it out
 	findTaskSqlStatement := `
   SELECT title, description, completed, deleted FROM task WHERE id = ?;
@@ -28,7 +28,7 @@ func (a *SqliteAdapter) GetTask(id int) (*port.TaskDTO, error) {
 	}
 	defer statement.Close()
 
-	var TaskDTO port.TaskDTO
+	var TaskDTO persistance.TaskDTO
 	err = statement.QueryRow(id).Scan(&TaskDTO.Title, &TaskDTO.Description, &TaskDTO.Completed, &TaskDTO.Deleted)
 	if err != nil {
 		return nil, fmt.Errorf("unable to set ID into statement: %v", err.Error())

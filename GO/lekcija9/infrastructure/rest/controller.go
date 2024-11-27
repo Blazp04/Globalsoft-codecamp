@@ -2,7 +2,7 @@ package rest
 
 import (
 	"blazperic/lekcija9/config"
-	"blazperic/lekcija9/core/port"
+	"blazperic/lekcija9/core/port/persistance"
 	"blazperic/lekcija9/infrastructure/persistence"
 	"blazperic/lekcija9/persistence/sqlite"
 	"net/http"
@@ -28,11 +28,7 @@ func NewRestController() Controller {
 func (c *Controller) setupRoutes() {
 	c.router.Use(gin.Logger())
 
-	c.router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Hello world!",
-		})
-	})
+	c.router.GET("/", c.healthCheck)
 
 	c.router.GET("/tasks/:id", func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
@@ -63,7 +59,7 @@ func (c *Controller) setupRoutes() {
 
 		taskPersistence := persistence.NewPersistenceAdapter(db.GetDb())
 
-		var taskDTO port.TaskDTO
+		var taskDTO persistance.TaskDTO
 		err := c.BindJSON(&taskDTO)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -83,6 +79,12 @@ func (c *Controller) setupRoutes() {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Task created successfully",
 		})
+	})
+}
+
+func (c *Controller) healthCheck(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Healthy",
 	})
 }
 

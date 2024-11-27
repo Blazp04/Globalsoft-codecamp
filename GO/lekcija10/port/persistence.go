@@ -2,9 +2,9 @@ package port
 
 import "time"
 
-type Port interface {
+type PersistencePort interface {
 	GetTask(id int) (*TaskDTO, error)
-	NewTask(title, description string, deadline time.Time, completed, deleted bool) error
+	NewTask(title, description string, deadline time.Time, completed bool) error
 }
 
 type TaskDTO struct {
