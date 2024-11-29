@@ -41,9 +41,9 @@ func (c *Controller) setupRoutes() {
 	v1 := c.router.Group("v1")
 	{
 		v1.GET("/health", c.health)
+		v1.GET("//tasks:id", c.getTask)
+		v1.GET("/tasks", c.getAllTasks)
 		v1.POST("/tasks", c.createNewTask)
-		v1.GET("/tasks/:id", c.getTask)
-		v1.GET("/getAllTasks", c.getAllTasks)
 		v1.DELETE("/tasks/:id", c.deleteTask)
 		v1.PUT("/tasks/:id", c.completeTask)
 	}
